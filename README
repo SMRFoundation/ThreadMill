@@ -1,1 +1,109 @@
+
 ThreadMill README File
+
+
+
+* What ThreadMill Is
+
+- ThreadMill is a software framework for processing and visualizing message-board post data.
+
+- When it is run on message-board data, it generates a database of statistics on the posts at the board, forum, and thread level.
+
+- When the application server is started, it dynamically generates html pages describing the boards, forums, and threads.
+
+- It is implemented as a set of Ruby scripts and Haml templates.
+
+
+
+* What Is Required to Run ThreadMill
+
+- ThreadMill requires a Ruby interpreter along with the following gems:
+
+	rubygems
+	mongo
+	sinatra
+	haml
+
+- ThreadMill requires read and write access on an instance of MongoDB.
+
+- ThreadMill requires that the user provide message data as a Mongo collection.
+
+- Each record in the collection must contain the following fields:
+
+	[name]				[type]				[description]
+
+	_id					BSON:ObjectID		Mongo native document id
+    author_id			string
+    author_name			string
+    board_id			int
+    board_name			string
+    board_url			string
+    forum_id			string
+    forum_name			string
+    is_op				int					whether post is the first in the thread
+    thread_id			string
+    thread_title      	string
+    thread_url			string
+    timestamp			int					epoch seconds value for timestamp
+
+- Further, ThreadMill will add this additional field to each document in the collection
+
+	is_processed		int					whether threadmill has processed this post
+
+
+
+* How to Run ThreadMill
+
+- Depending on the local Ruby implementation, it may be necessary to change the interpreter path that is specified on the first line of these files:
+
+	process_batch.rb
+	reset_threadmill.rb
+	sinatra_routes.rb
+
+- Set the HOST, PORT, MESSAGE_DATABASE, and MESSAGE_COLLECTION constants in process_batch.rb and reset_threadmill.rb so that they point to the Mongo collection of message board posts that is to be processed.
+
+- If this is the first time any data has been processed, reset_threadmill.rb should be run to create various indices.
+
+- To process the data, run process_batch.rb.  Set the value of MAX_CHUNK_SIZE to something that gives acceptable performance and rerun the script until all of the source data has been processed as judged by the console output.
+
+- In a system where new source data updates are occurring, process_batch.rb can be run on some schedule so that the ThreadMill collections of board, forum, and thread statistics stay up to date with the source data.
+
+- To see the statistics on all the messages that have been processed, start the application server by running sinatra_routes.rb and pointing the browser at http://localhost:4567.
+
+- To reset (delete all documents from) the board, forum, and thread collections, run reset_threadmill.rb.
+
+
+
+* Directory Structure and File Descriptions
+
+- The folder for this release contains this README file along with two sub directories, bin and sinatra.  
+
+- The bin subdirectory contains the Ruby code necessary to process a source message database and maintain the ThreadMill database.  
+
+- The sinatra subdirectory contains the code to visualize board, forum, and thread statistics in the ThreadMill database.  
+
+- The sinatra_routes.rb file defines the how various urls are processed in ThreadMill; run it to start the server and view the results in a browser pointed to http://localhost:4567.  
+
+- The files in the /sinatra/public subdirectory are static content for the html index page.  
+
+- The files under the /sinatra/views subdirectory are Haml templates that describe how to format the board, forum, and thread statistics.
+
+
+
+* Project Sponsor
+
+- This project is being sponsored on GitHub by the Social Media Research Foundation (http://www.smrfoundation.org/).
+
+
+
+* Project Developers
+
+- ThreadMill was initially developed by Bruce Woodson (bruce@morningside-analytics.com) from Morningside Analytics (http://morningside-analytics.com/).
+
+
+
+* License
+
+- This project is being released under the BSD license.
+
+

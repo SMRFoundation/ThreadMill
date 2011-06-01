@@ -1,0 +1,23 @@
+
+%h1 Forums
+
+%table{:cellpadding => 5, :bgcolor => "#FFFFFF", :border => 1}
+  %tr
+    %th board | forum
+    %th first
+    %th last
+    %th days
+    %th threads
+    %th authors
+
+
+  - @forum_data.each do |forum_item|
+    %tr
+      %td
+        %a{ :href => '/forums/' + forum_item[7] } #{forum_item[0] + ' | ' + forum_item[1]}
+      %td=forum_item[2]
+      %td=forum_item[3]  
+      %td=forum_item[4]
+      %td=forum_item[5]
+      %td=forum_item[6]
+  

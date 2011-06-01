@@ -1,0 +1,20 @@
+
+%h1 Threads
+
+%table{:cellpadding => 5, :bgcolor => "#FFFFFF", :border => 1}
+  %tr
+    %th board | forum | thread
+    %th first
+    %th last
+    %th days
+    %th authors
+
+  - @thread_data.each do |thread_item|
+    %tr
+      %td
+        %a{ :href => '/threads/' + thread_item[7] } #{thread_item[0] + ' | ' + thread_item[1] + ' | ' + thread_item[2]}
+      %td=thread_item[3]  
+      %td=thread_item[4]
+      %td=thread_item[5]
+      %td=thread_item[6]
+  
